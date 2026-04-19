@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Sign Up | Logorhythms</title>
+
+	<style>
+		:root {
+			--bg: #070907;
+			--panel: #0f130f;
+			--panel-soft: #141a14;
+			--text: #edf3ed;
+			--muted: #9dad9d;
+			--border: #2a342a;
+			--accent: #7fff4f;
+			--accent-strong: #45ff7a;
+			--danger: #ff5f6d;
+			--focus-ring: 0 0 0 3px rgba(127, 255, 79, 0.18);
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html,
+		body {
+			margin: 0;
+			min-height: 100%;
+		}
+
+		body {
+			min-height: 100vh;
+			font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+			Roboto, sans-serif;
+			background: var(--bg);
+			color: var(--text);
+		}
+
+		.page {
+			min-height: 100vh;
+			display: grid;
+			grid-template-columns: 1fr 2fr;
+		}
+
+		.visual-panel {
+			position: relative;
+			min-height: 100vh;
+			overflow: hidden;
+			background: #000;
+		}
+
+		.visual-panel > img:first-child {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+
+		.visual-overlay {
+			display: none;
+		}
+
+		.brand-box {
+			position: relative;
+			z-index: 1;
+			height: 100%;
+			display: grid;
+			place-items: center;
+			padding: 24px;
+		}
+
+		.brand-top {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 0;
+			background: transparent;
+			border: 0;
+			backdrop-filter: none;
+		}
+
+		.brand-top img {
+			width: clamp(120px, 14vw, 190px);
+			height: auto;
+			display: block;
+			object-fit: contain;
+			filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.35));
+		}
+
+		.form-panel {
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			padding: 56px 64px;
+			background:
+			radial-gradient(circle at top right, rgba(127, 255, 79, 0.06), transparent 22%),
+			var(--panel);
+		}
+
+		.brand-copy {
+			margin-bottom: 28px;
+			padding: 0;
+			max-width: 42rem;
+			background: transparent;
+			border: 0;
+			border-radius: 0;
+			backdrop-filter: none;
+		}
+
+		.brand-copy h1 {
+			margin: 0;
+			font-size: clamp(2rem, 3vw, 3rem);
+			line-height: 1.08;
+			letter-spacing: -0.03em;
+			max-width: 12ch;
+		}
+
+		.form-panel h2 {
+			margin: 0 0 24px;
+			font-size: 1.4rem;
+			line-height: 1.2;
+			color: var(--text);
+		}
+
+		.signup-card {
+			padding: 0;
+			background: transparent;
+			border: 0;
+			border-radius: 0;
+			box-shadow: none;
+			max-width: 720px;
+		}
+
+		.signup-form {
+			display: flex;
+			flex-direction: column;
+			gap: 28px;
+		}
+
+		.signup-form fieldset {
+			margin: 0;
+			padding: 28px;
+			border: 1px solid var(--border);
+			border-radius: 18px;
+			background: rgba(255, 255, 255, 0.02);
+		}
+
+		.signup-form legend {
+			padding: 0 8px;
+			font-size: 0.95rem;
+			font-weight: 700;
+			color: var(--accent);
+			letter-spacing: 0.02em;
+		}
+
+		.form-grid {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 18px 16px;
+		}
+
+		.field {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+		}
+
+		.field.full {
+			grid-column: 1 / -1;
+		}
+
+		label {
+			font-size: 0.9rem;
+			font-weight: 600;
+			color: var(--text);
+		}
+
+		input {
+			width: 100%;
+			padding: 14px 16px;
+			border: 1px solid var(--border);
+			border-radius: 12px;
+			background: var(--panel-soft);
+			color: var(--text);
+			font: inherit;
+			outline: none;
+			transition: border-color 0.2s ease, box-shadow 0.2s ease,
+			background-color 0.2s ease;
+		}
+
+		input::placeholder {
+			color: #738273;
+		}
+
+		input:focus {
+			border-color: var(--accent);
+			box-shadow: var(--focus-ring);
+			background: #171e17;
+		}
+
+		input:invalid:not(:placeholder-shown):not(:focus) {
+			border-color: var(--danger);
+			box-shadow: 0 0 0 3px rgba(255, 95, 109, 0.14);
+		}
+
+		.actions {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 18px;
+			max-width: 720px;
+		}
+
+		.terms-row {
+			display: flex;
+			align-items: flex-start;
+			gap: 10px;
+			font-size: 0.95rem;
+			line-height: 1.5;
+			color: var(--muted);
+		}
+
+		.terms-row input {
+			width: 18px;
+			height: 18px;
+			margin: 2px 0 0;
+			padding: 0;
+			accent-color: var(--accent);
+			flex-shrink: 0;
+		}
+
+		.terms-row label {
+			color: var(--muted);
+			font-weight: 500;
+		}
+
+		.terms-row a,
+		.login-link a {
+			color: var(--accent);
+			text-decoration: none;
+		}
+
+		.terms-row a:hover,
+		.login-link a:hover {
+			color: var(--accent-strong);
+		}
+
+		.submit-btn {
+			min-width: 220px;
+			padding: 14px 22px;
+			border: 0;
+			border-radius: 14px;
+			background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+			color: #071007;
+			font: inherit;
+			font-weight: 800;
+			cursor: pointer;
+			transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+			box-shadow: 0 10px 28px rgba(69, 255, 122, 0.18);
+		}
+
+		.submit-btn:hover {
+			transform: translateY(-1px);
+			filter: brightness(1.02);
+		}
+
+		.submit-btn:active {
+			transform: translateY(0);
+		}
+
+		.login-link {
+			margin: 0;
+			font-size: 0.95rem;
+			color: var(--muted);
+		}
+
+		.page-footer {
+			padding: 14px 20px 18px;
+			text-align: center;
+			font-size: 0.85rem;
+			color: #7f8d7f;
+			background: var(--bg);
+		}
+
+		@media (max-width: 900px) {
+			.page {
+			grid-template-columns: 1fr;
+			}
+
+			.visual-panel {
+			min-height: 260px;
+			}
+
+			.form-panel {
+			min-height: auto;
+			padding: 36px 22px 40px;
+			}
+
+			.form-grid {
+			grid-template-columns: 1fr;
+			}
+
+			.signup-form fieldset {
+			padding: 22px 18px;
+			}
+
+			.submit-btn {
+			width: 100%;
+			min-width: 0;
+			}
+		}
+	</style>
+</head>
+
+<body>
+  	<main class="page">
+		<aside class="visual-panel">
+			<img src="./back-image.jpg"/>
+			<div class="visual-overlay"></div>
+
+			<div class="brand-box">
+				<div class="brand-top">
+					<img src="./logo.png" alt="Logorhythms logo"/>
+				</div>
+			</div>
+		</aside>
+
+		<section class="form-panel">
+			<div class="brand-copy">
+				<h1>Build the future with us — upload.</h1>
+			</div>
+		
+      		<h2>Create your account</h2>
+
+			<div class="signup-card">
+				<form class="signup-form" action="https://httpbin.org/post" method="post">
+					<fieldset>
+						<legend>Account details</legend>
+
+						<div class="form-grid">
+							<div class="field">
+								<label for="first_name">First name</label>
+								<input
+								type="text"
+								name="first_name"
+								id="first_name"
+								placeholder="Stephen"
+								minlength="2"
+								required
+								/>
+							</div>
+
+							<div class="field">
+								<label for="last_name">Last name</label>
+								<input
+								type="text"
+								name="last_name"
+								id="last_name"
+								placeholder="Holstrom"
+								minlength="2"
+								required
+								/>
+							</div>
+
+							<div class="field full">
+								<label for="email">Email</label>
+								<input
+								type="email"
+								name="email"
+								id="email"
+								placeholder="Stephen@logorhythms.com"
+								required
+								/>
+							</div>
+
+							<div class="field">
+								<label for="password">Password</label>
+								<input
+								type="password"
+								name="password"
+								id="password"
+								placeholder="At least 8 characters"
+								minlength="8"
+								required
+								/>
+							</div>
+
+							<div class="field">
+								<label for="confirm_password">Confirm password</label>
+								<input
+								type="password"
+								name="confirm_password"
+								id="confirm_password"
+								placeholder="Repeat your password"
+								minlength="8"
+								required
+								/>
+							</div>
+				
+						</div>
+					</fieldset>
+
+					<div class="actions">
+						<div class="terms-row">
+							<input type="checkbox" name="terms" id="terms" required />
+							<label for="terms">
+								I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.
+							</label>
+						</div>
+
+						<button class="submit-btn" type="submit">Create account</button>
+
+						<p class="login-link">
+							Already have an account? <a href="./sign-up.html">Log in</a>
+						</p>
+					</div>
+				</form>
+			</div>
+		</section>
+	</main>
+
+	<footer class="page-footer">
+		Copyright © kkkoyari 2026
+	</footer>
+</body>
+</html>
